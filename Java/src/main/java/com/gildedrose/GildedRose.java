@@ -7,6 +7,15 @@ class GildedRose {
     this.items = items;
   }
 
+  private void decreaseSellIn(final Item item) {
+    final boolean isNotSulfurasHandOfRagneros = !item.name.equals("Sulfuras, Hand of Ragnaros");
+
+    if (isNotSulfurasHandOfRagneros) {
+
+      item.sellIn = item.sellIn - 1;
+    }
+  }
+
   private void decreaseQuality(final Item item) {
     System.out.println("decrease: " + item);
     final boolean isNotSulfurasHandOfRagneros = !item.name.equals("Sulfuras, Hand of Ragnaros");
@@ -50,7 +59,7 @@ class GildedRose {
         }
       }
 
-      decreaseQuality(item);
+      decreaseSellIn(item);
 
       if (item.sellIn < 0) {
         if (!item.name.equals("Aged Brie")) {

@@ -19,7 +19,7 @@ class GildedRoseTest {
     final Item[] items = new Item[] {new Item("Elixir of the Mongoose", 5, 7)};
     final GildedRose app = new GildedRose(items);
     app.updateQuality();
-    assertEquals("Conjured Mana Cake", app.items[0].name);
+    assertEquals("Elixir of the Mongoose", app.items[0].name);
     assertEquals(4, app.items[0].sellIn);
     assertEquals(6, app.items[0].quality);
   }
