@@ -55,4 +55,44 @@ class GildedRoseTest {
     assertEquals(4, app.items[0].sellIn);
     assertEquals(11, app.items[0].quality);
   }
+
+    @Test
+  void shouldNotIncreaseQualityForBrieIfAlready50() {
+    final Item[] items = new Item[] {new Item("Aged Brie", 5, 50)};
+    final GildedRose app = new GildedRose(items);
+    app.updateQuality();
+    assertEquals("Aged Brie", app.items[0].name);
+    assertEquals(4, app.items[0].sellIn);
+    assertEquals(50, app.items[0].quality);
+  }
+
+  @Test
+  void shouldIncreaseQualityForBackstagePassesIfNotExpiredForLessThan11Days() {
+          final Item[] items = new Item[] {new Item("Backstage passes to a TAFKAL80ETC concert", 10, 10)};
+    final GildedRose app = new GildedRose(items);
+    app.updateQuality();
+    assertEquals("Backstage passes to a TAFKAL80ETC concert", app.items[0].name);
+    assertEquals(9, app.items[0].sellIn);
+    assertEquals(12, app.items[0].quality);
+  }
+
+    @Test
+  void shouldIncreaseQualityForBackstagePassesIfNotExpiredForLessThan3Days() {
+          final Item[] items = new Item[] {new Item("Backstage passes to a TAFKAL80ETC concert", 5, 10)};
+    final GildedRose app = new GildedRose(items);
+    app.updateQuality();
+    assertEquals("Backstage passes to a TAFKAL80ETC concert", app.items[0].name);
+    assertEquals(4, app.items[0].sellIn);
+    assertEquals(13, app.items[0].quality);
+  }
+
+    @Test
+  void shouldSetQualityToZeroForBackstagePassesIExpired() {
+          final Item[] items = new Item[] {new Item("Backstage passes to a TAFKAL80ETC concert", -1, 10)};
+    final GildedRose app = new GildedRose(items);
+    app.updateQuality();
+    assertEquals("Backstage passes to a TAFKAL80ETC concert", app.items[0].name);
+    assertEquals(-2, app.items[0].sellIn);
+    assertEquals(0, app.items[0].quality);
+  }
 }
