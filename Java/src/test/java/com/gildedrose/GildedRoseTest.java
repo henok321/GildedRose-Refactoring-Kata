@@ -57,6 +57,16 @@ class GildedRoseTest {
   }
 
     @Test
+    void shouldIncreaseQualityForSpoiledBrie() {
+        final Item[] items = new Item[] {new Item("Aged Brie", -1, 10)};
+        final GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Aged Brie", app.items[0].name);
+        assertEquals(-2, app.items[0].sellIn);
+        assertEquals(12, app.items[0].quality);
+    }
+
+    @Test
   void shouldNotIncreaseQualityForBrieIfAlready50() {
     final Item[] items = new Item[] {new Item("Aged Brie", 5, 50)};
     final GildedRose app = new GildedRose(items);
