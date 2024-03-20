@@ -15,19 +15,8 @@ class GildedRose {
         }
     }
 
-    private void decreaseQuality(final Item item) {
-        //System.out.println("decrease: " + item);
-        final boolean isNotSulfurasHandOfRagneros = !item.name.equals("Sulfuras, Hand of Ragnaros");
-        final boolean isConjured = item.name.startsWith("Conjured");
-
-        if (isConjured) {
-            item.quality = item.quality - 2;
-        } else {
-
-            if (isNotSulfurasHandOfRagneros) {
-                item.quality = item.quality - 1;
-            }
-        }
+    private void decreaseQuality(final Item item, final int qualityDecrease) {
+        item.quality = item.quality - qualityDecrease;
     }
 
     private void increaseQuality(final Item item, final int qualityIncrease) {
@@ -38,32 +27,42 @@ class GildedRose {
 
     public void updateQuality() {
         for (final Item item : items) {
-            if (!isAgedBrie(item)
-                && !isBackstageConcert(item)) {
-                if (item.quality > 0) {
-                    decreaseQuality(item);
-                }
-            } else {
+            if (isAgedBrie(item) || isBackstageConcert(item)) {
                 if (item.quality < 50) {
                     item.quality = item.quality + 1;
 
                     handleBackstageQuality(item);
                 }
+            } else {
+                handleQualityDecrease(item);
             }
 
             decreaseSellIn(item);
 
             if (item.sellIn < 0) {
-                if (!isAgedBrie(item)) {
-                    if (!isBackstageConcert(item)) {
-                        if (item.quality > 0) {
-                            decreaseQuality(item);
-                        }
-                    } else {
-                        item.quality = 0;
-                    }
-                } else {
+                if (isAgedBrie(item)) {
                     increaseQuality(item, 1);
+                } else {
+                    if (isBackstageConcert(item)) {
+                        item.quality = 0;
+                    } else {
+                        handleQualityDecrease(item);
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleQualityDecrease(final Item item) {
+        if (item.quality > 0) {
+            final boolean isNotSulfurasHandOfRagneros = !item.name.equals("Sulfuras, Hand of Ragnaros");
+            final boolean isConjured = item.name.startsWith("Conjured");
+
+            if (isConjured) {
+                decreaseQuality(item, 2);
+            } else {
+                if (isNotSulfurasHandOfRagneros) {
+                    decreaseQuality(item, 1);
                 }
             }
         }
